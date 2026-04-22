@@ -1,0 +1,9 @@
+Explain gradient descent like I am five.
+
+I am going to be a little bit more technical than I was before. I'm going for a bit of a "go-slow" approach. It's going be more of an "I'm not going fast enough" kind of approach, but I think it's a good idea. The first thing I want to do is to get the gradient down to a point where I can see the top of the hill. That's where the descent starts. If I don't get it down, I'll be stuck. So I've got to go slow. And I have to make sure I get to the bottom of that hill before I go fast. But I also have a lot of other things to worry about. For example, if I do a very steep descent, it will be very hard to see. You can't see it. There's no way I could see that. In fact, you can only see a few feet of it, so I need to keep going.
+----------------------------------------
+Explain gradient descent.
+
+The first step is to find the gradient. The gradient is a function of the distance between the two points. This is the same as the first two steps, but with a different direction. For example, if you want to see the slope of a hill, you can use the following formula:
+. . . (1)(2) (3) . (4) The slope is 1.5. If you are going to use a gradient, it is important to know that the direction of your gradient depends on the angle of attack of each point. In other words, the point where you have a slope that is perpendicular to the ground is going in the opposite direction to that point, and so on. So, for example: . (. .) If the line of sight is in a straight line, then the perpendicular line is not going straight. But if the lines are perpendicular, they are not perpendicular. Therefore, we can see that if we use an
+----------------------------------------
