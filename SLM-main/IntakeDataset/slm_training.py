@@ -14,8 +14,8 @@ from datasets import load_from_disk
 from pathlib import Path
 
 script_dir = Path(__file__).parent.parent  # Go up to SLM directory
-dataset_path = script_dir / "SLM-main" / "IntakeDataset" / "v7_master_titanium_data"
-tokenizer_path = script_dir / "SLM-main" / "v1_8k_code_tokenizer"
+dataset_path = "./v7_master_titanium_data"
+tokenizer_path = "./v1_8k_code_tokenizer"
 
 def main():
 
@@ -68,19 +68,30 @@ def main():
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     # 4. Configure Training Arguments Optimized for RTX 4060 (8GB VRAM)
+    # 4. Configure Training Arguments Optimized for 71k Scale (RTX 4060 / 8GB VRAM)
     training_args = TrainingArguments(
-        output_dir="./v2_alpha_copilot",
-        num_train_epochs=10,                # Cranked up to cement the syntax rhythm
-        per_device_train_batch_size=8,      
+        output_dir="./v2_master_copilot",
+        num_train_epochs=3,                 # Lowered from 10 to prevent overfitting the massive dataset
+        per_device_train_batch_size=8,      # Kept at 8 to protect your 8GB VRAM
         per_device_eval_batch_size=8,
-        gradient_accumulation_steps=4,      
-        eval_strategy="epoch",        # Evaluate every epoch (since they are fast)
-        save_strategy="epoch",              # Save a checkpoint every epoch
-        learning_rate=5e-4,                 
+        gradient_accumulation_steps=4,      # Yields an effective batch size of 32 (highly stable)
+        
+        # New: Smooth convergence strategy
+        learning_rate=3e-4,                 # Lowered for a more stable descent
+        lr_scheduler_type="cosine",         # Glides the learning rate down smoothly
+        warmup_ratio=0.03,                  # Gentle ramp-up for the first 3% of training
         weight_decay=0.01,
-        logging_steps=10,                   # Lowered so you get more frequent terminal updates
-        fp16=True,                          
-        load_best_model_at_end=True,        # Automatically retrieves the smartest epoch
+        
+        # New: Checkpoint protection
+        save_strategy="steps",              # Save during the epoch, not just at the end
+        save_steps=500,                     # Save a checkpoint every ~500 steps
+        save_total_limit=3,                 # Delete older checkpoints to save disk space
+        eval_strategy="steps",              # Evaluate alongside the saves
+        eval_steps=500,
+        
+        logging_steps=10,                   
+        fp16=True,                          # Crucial for consumer GPUs
+        load_best_model_at_end=True,        
         metric_for_best_model="loss",
         report_to="none"                    
     )
